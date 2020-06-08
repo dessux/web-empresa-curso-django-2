@@ -1,0 +1,81 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+
+<!-- Versión front end -->
+<!--
+<section class="page-section cta">
+  <div class="container">
+    <div class="row">
+      <div class="col-xl-9 mx-auto">
+        <div class="cta-innerv text-center rounded">
+          <h2 class="section-heading mb-5">
+            <span class="section-heading-upper">17/05/2000</span>
+            <span class="section-heading-lower">Ofertas de otoño</span>
+          </h2>
+          <p class="mb-0">
+            <img class="mx-auto d-flex rounded img-fluid mb-3 mb-lg-0" src="{% static 'core/img/products-01.jpg' %}" alt="">
+          </p>
+          <p class="mb-0 mbt">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec leo dui, vehicula vel dapibus ac, tempus non enim. Nunc tempor vel lacus vel gravida. Nam sit amet pellentesque mi. Aliquam eget porta mi, quis fermentum metus. Curabitur efficitur pellentesque tellus nec volutpat. In viverra mattis sem, facilisis condimentum mi rutrum ut. Quisque ut pellentesque dui. Nullam eu vehicula metus. Pellentesque id interdum elit. Aenean in efficitur enim.
+          </p>
+          <p class="mb-0 mbt">
+            <span class="section-heading-under">Publicado por <em><b>Juan</b></em> en <em><a href="#" class="link">General</a>, <a href="#" class="link">Ofertas</a></em></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+-->
+<!-- Versión backend -->
+
+{% for post in posts %}
+  <section class="page-section cta">
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-9 mx-auto">
+          <div class="cta-innerv text-center rounded">
+            <h2 class="section-heading mb-5">
+              <!-- Cambiar el formato de la fecha con un template tag -->
+              <!-- 	* Documentación para template tag date:
+                    	https://docs.djangoproject.com/en/2.0/ref/templates/builtins/#date
+              -->
+              <span class="section-heading-upper">{{post.published|date:"SHORT_DATE_FORMAT"}}</span>
+              <span class="section-heading-lower">{{post.title}}</span>
+            </h2>
+            <p class="mb-0">
+              <img class="mx-auto d-flex rounded img-fluid mb-3 mb-lg-0" src="{{post.image.url}}" alt="">
+            </p>
+            <p class="mb-0 mbt">
+              <!-- Para que reconozca los saltos de línea en el contenido html, se usa el tag linebreaks -->
+              {{post.content|linebreaks}}
+            </p>
+            <p class="mb-0 mbt">
+              <span class="section-heading-under">Publicado por <em><b>{{post.author}}</b></em> en
+               <!-- <em><a href="#" class="link">General</a>, <a href="#" class="link">Ofertas</a></em></span> -->
+               {% for category in post.categories.all %}
+                  <!-- Agregar enlaces a las categorías -->
+                  <em>
+                    <a href="{% url 'category' category.id %}" class=link > {{category.name}}</a> 
+                    {% if not forloop.last %} <!-- Si no es el último reg. del for poner "," -->
+                        ,
+                    {% endif %}
+                  </em>
+               {% endfor %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endfor %}
+
+{% endblock %}
+
+
+    

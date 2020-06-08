@@ -1,0 +1,51 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Muestra{% endblock %}
+
+{% block content %}
+<section class="page-section about-heading">
+  <div class="container">
+    <div class="about-heading-content mbtm">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 mx-auto">
+          <div class="bg-faded rounded p-5 forced">
+            <h2 class="section-heading mb-4">
+            <!--  <span class="section-heading-lower">Página genérica</span>  -->
+              <span class="section-heading-lower">{{page.title}}</span>
+            </h2>
+            <div class="section-content">
+              <!--
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ipsum nulla, scelerisque sed dui eu, fringilla consequat velit. Integer euismod, eros sit amet facilisis rutrum, elit massa iaculis ex, vitae gravida velit dolor at nunc. Proin tincidunt pellentesque lacus. Cras egestas ligula eu purus finibus, et convallis sem rhoncus. Fusce porta magna nisl. Aenean sed quam at tellus sollicitudin facilisis. Pellentesque eleifend placerat luctus.</p>
+                <p>Proin semper nisi quam, faucibus pharetra sapien laoreet et. Proin sit amet aliquam mi. Aliquam rhoncus tortor a accumsan condimentum. Maecenas nisl urna, auctor vel aliquam ut, accumsan sit amet ipsum. Nulla at felis lorem. Phasellus sit amet consectetur lacus. Praesent eget feugiat sem. Nam odio neque, luctus quis velit sagittis, aliquet consequat arcu. Duis eget molestie turpis, nec mattis sem. Donec sem risus, rutrum quis elementum ut, pulvinar et lorem. Quisque egestas justo id justo sodales, id commodo lorem condimentum.</p>
+                <p>Mauris hendrerit felis id diam pellentesque, vel lobortis lectus sagittis. Proin efficitur dui justo, sed laoreet mi sollicitudin dapibus. Donec a convallis lorem. Sed laoreet suscipit gravida. Nam tincidunt in justo sit amet rhoncus. Donec et lectus est. Mauris a felis eu risus tincidunt congue ac sit amet orci. Nam placerat varius elit, eu vulputate nibh consequat eget.</p>
+              -->
+              <!--
+                {{page.content|linebreaks}} <!- - Permitir saltos de línea 
+                -->
+                {{page.content|safe}} <!-- Indicar a Django que es html seguro e interprete los <p>, <strong>, ... etc. -->
+
+                <!-- Mostrar datos de usuario identificado en el panel de administrador Django 
+                     que se están inyectando gracias al procesador de contexto (de settings.py 
+                     que maneja la autenticación e inyecta datos de la sesión activa dentro de 
+                     los templates
+                {{user}}
+                -->
+                {% if user.is_authenticated %}  <!-- Si el usuario está autenticado en el panel de administrador Django -->
+                  <!-- Link (template tag url) referencia a la app admin y la app pages, al modelo
+                       page que queremos editar y por último change que es la acción a ejecutar y el 
+                       parámetro page.id de la página a editar
+                       Documentación de Acciones del administrador:
+                       https://docs.djangoproject.com/en/2.0/ref/contrib/admin/#reversing-admin-urls
+                  -->
+                  <p><a href="{% url 'admin:pages_page_change' page.id %}">Editar</a></p>                
+                {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
